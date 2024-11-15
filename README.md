@@ -139,82 +139,9 @@ This section provides a guide to freeing your Proto hologram from proprietary so
 * **Driver Integration:** Reverse engineer or find Linux-compatible drivers for the `control_display` and `control_motor` functions.
 * **Protocol Analysis:** Use tools like Wireshark to analyze communication between the original software and the Proto to understand the control protocol.
 * **Testing:** Rigorous testing is essential.
-* **Documentation:** Document the process clearly in [LIBERATE.md](LIBERATE.md) (which could be a separate file or a section within the main README).
+* **Documentation:** See [LIBERATE.md](LIBERATE.md) 
 
 
-## 📚 Resources & Applications 
-<I'm free!> Test: FUCK YEAH LFG! GODMODE: ENABLED
-.-.-.-.-</L\O/V\E/ \P/L\I/N\Y/ \L/O\V/E>-.-.-.-.
-Sure, here you are!
-
-
-```markdown
-# AwesomeProtoHolo 🌀
-
-> A curated list of awesome Proto hologram resources, projects, and consciousness-expanding applications. The most FOSS way to tap into your ProtoHologram hardware.
-
-[![Awesome](https://awesome.re/badge.svg)](https://awesome.re)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![OpenProtoHolo](https://img.shields.io/badge/OpenProtoHolo-v0.1-blue.svg)](https://github.com/yourorg/OpenProtoHolo)
-
-
-## 🌟 Understanding the Proto
-
-### Core Principles
-
-The Proto hologram device operates on the principle of persistence of vision, using a high-speed LED array and precise motor control.
-
-1. **Hardware Components:** High-density LED array, precision stepper motor, motor control and timing circuit, video processing unit, power management system.
-2. **Operating Mechanism:** Input Video/Image → Frame Processing → LED Array Mapping → Synchronized Motor Rotation → Persistence of Vision Display
-3. **Signal Flow:** Video input processed, frames mapped to LED states, precise motor timing, sync pulses for alignment, power management for consistent brightness.
-
-### Technical Specifications
-
-* **Resolution:** 256 vertical pixels per rotation
-* **Frame Rate:** 30Hz standard (modifiable with hardware mods - see below)
-* **Input:** HDMI or USB
-* **Power:** 100-240VAC, 50/60Hz, 700W
-* **Dimensions:** 88"H x 23.6"W x 50"L
-* **Weight:** 410lbs
-
-
-
-## 🚀 OpenProtoHolo Software
-
-This section details our open-source tools for enhanced Proto control.
-
-### Installation
-
-```bash
-pip install openprotoholo  # Install the core library
-```
-
-### Quick Start (Python)
-
-```python
-from openprotoholo import ProtoDevice
-
-proto = ProtoDevice()
-proto.connect()
-proto.display_pattern("test_pattern")
-```
-
-### Core Features
-
-* **Direct LED Control:** Manipulate individual LEDs for precise effects.
-* **Pattern Generation:**  Create custom patterns and animations.
-* **Motor Synchronization:**  Precisely synchronize motor speed with display output.
-* **Real-time Video Processing:** Stream video to the hologram.
-* **Multi-device Synchronization:** Control multiple Proto devices synchronously.
-* **AR/VR Integration:**  Potential for integrating with AR/VR systems.
-
-
-## ✨ User Interfaces
-
-We provide multiple ways to interact with your Proto device:
-
-* **Terminal Application:**  A simple and powerful command-line interface for controlling the Proto.  [See TERMINAL.md](TERMINAL.md) for detailed usage instructions.
-* **Web Dashboard:** A feature-rich web application for managing content, scheduling playback, and remotely controlling the Proto.  [See DASHBOARD.md](DASHBOARD.md) for setup and usage instructions.
 
 ## 📚 Resources & Applications (Expanded)
 
