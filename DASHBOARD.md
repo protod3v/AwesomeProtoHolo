@@ -1,266 +1,188 @@
-# Proto-Freedom Dashboard 🌌
+## Proto-Freedom Dashboard (SvelteKit, Bun, SQLite, Cloudflare Workers)
 
-> A quantum-ready spatial computing dashboard for the Proto ecosystem
+This document outlines the setup and development of the Proto-Freedom Dashboard using SvelteKit, Bun, SQLite for local development, and Cloudflare Workers with D1 (SQLite) and KV for cloud deployment. This architecture offers a versatile and performant solution.
 
-[![SpatioProtocol](https://img.shields.io/badge/Spatio-Enabled-blue.svg)](https://github.com/spatioprotocol)
-[![DaisyUI](https://img.shields.io/badge/DaisyUI-Integrated-green.svg)](https://daisyui.com)
-[![Quantum Ready](https://img.shields.io/badge/Quantum-Ready-purple.svg)]()
+### 1. Local Development Setup (Bun & SQLite)
 
-## 🌟 Architecture Overview
+**1.1 Install Bun:**
 
-```mermaid
-graph TB
-    A[User Interface] --> B[Spatial Layer]
-    B --> C[Quantum Bridge]
-    C --> D[Hardware Interface]
-    
-    subgraph "Frontend Layer"
-    A --- E[SvelteKit + DaisyUI]
-    E --- F[3D Visualization]
-    F --- G[Spatial Controls]
-    end
-    
-    subgraph "Spatial Processing"
-    B --- H[Spatio Protocol]
-    H --- I[Asset Management]
-    I --- J[Spatial Sync]
-    end
-    
-    subgraph "Quantum Layer"
-    C --- K[State Superposition]
-    K --- L[Quantum Entanglement]
-    L --- M[Coherence Manager]
-    end
-    
-    subgraph "Hardware Integration"
-    D --- N[Proto Hologram]
-    N --- O[VIIM Glasses]
-    O --- P[OpenBCI]
-    end
-```
+If you don't have Bun installed, follow the instructions on the official Bun website ([https://bun.sh/](https://bun.sh/)).
 
-## 🚀 Quick Start
+**1.2 Create Project:**
 
 ```bash
-# Create project using Bun
-bun create proto-freedom
+bun create proto-freedom-dashboard --template svelte-kit
+cd proto-freedom-dashboard
+```
 
-# Install dependencies
+**1.3 Install Dependencies:**
+
+```bash
 bun install
-
-# Add quantum-spatial packages
-bun add @spatioprotocol/core @quantum-bridge/core
 ```
 
-## 📁 Project Structure
+**1.4 Setup SQLite:**
 
-```
-proto-freedom/
-├── src/
-│   ├── lib/
-│   │   ├── components/
-│   │   │   ├── spatial/
-│   │   │   ├── quantum/
-│   │   │   └── ui/
-│   │   ├── stores/
-│   │   └── utils/
-│   ├── routes/
-│   └── app.html
-├── static/
-├── tests/
-└── package.json
-```
+Bun has built-in support for SQLite. Create a database file (e.g., `proto.db`) in the root of your project.
 
-## 🌈 Core Features
+**1.5 Create API Routes (e.g., `src/routes/api/data/+server.js`):**
 
-### Spatial Integration
+```javascript
+import { Database } from 'bun:sqlite';
 
-```typescript
-// src/lib/spatial/manager.ts
-import { SpatioNode, SpatialAddress } from '@spatioprotocol/core';
-
-export class SpatialManager {
-  private node: SpatioNode;
-  
-  constructor() {
-    this.node = new SpatioNode({
-      quantumReady: true,
-      superposition: enabled
+export const GET = async () => {
+  const db = new Database('./proto.db'); // Connect to SQLite database
+  try {
+    const result = await db.query('SELECT * FROM your_table').all(); // Example query
+    db.close();
+    return new Response(JSON.stringify(result), {
+        headers: { 'Content-Type': 'application/json' }
     });
+  } catch (error) {
+      db.close();
+      return new Response(JSON.stringify({ error: error.message }), { status: 500 });
   }
-  
-  async initializeSpatialField() {
-    await this.node.createField({
-      dimension: '4D',
-      quantumStates: true
-    });
-  }
-}
+};
 ```
 
-### Quantum Bridge
-
-```typescript
-// src/lib/quantum/bridge.ts
-import { QuantumBridge } from '@quantum-bridge/core';
-
-export class QuantumStateManager {
-  private bridge: QuantumBridge;
-  
-  constructor() {
-    this.bridge = new QuantumBridge({
-      entanglementSupport: true,
-      coherenceTimeout: 1000
-    });
-  }
-  
-  async maintainCoherence() {
-    await this.bridge.synchronize({
-      spatialStates: true,
-      quantumField: active
-    });
-  }
-}
-```
-
-### UI Components (DaisyUI Enhanced)
+**1.6 SvelteKit Components (e.g., `src/routes/data/+page.svelte`):**
 
 ```svelte
-<!-- src/lib/components/ui/SpatialControls.svelte -->
-<script lang="ts">
-  import { SpatialManager } from '$lib/spatial/manager';
-  import { QuantumStateManager } from '$lib/quantum/bridge';
-  
-  const spatial = new SpatialManager();
-  const quantum = new QuantumStateManager();
+<script>
+    import { onMount } from 'svelte';
+    let data = [];
+
+    onMount(async () => {
+        const response = await fetch('/api/data');
+        data = await response.json();
+    });
+
+    $: if (data) {
+        console.log(data); // Log the retrieved data
+    }
 </script>
 
-<div class="card w-96 bg-base-100 shadow-xl">
-  <div class="card-body">
-    <h2 class="card-title">Spatial Control Center</h2>
-    <div class="quantum-field-visualizer">
-      <!-- 4D Field Visualization -->
-    </div>
-    <div class="flex justify-between">
-      <button class="btn btn-primary" on:click={spatial.initializeSpatialField}>
-        Initialize Field
-      </button>
-      <button class="btn btn-secondary" on:click={quantum.maintainCoherence}>
-        Sync States
-      </button>
-    </div>
-  </div>
-</div>
+{#if data}
+    <ul>
+        {#each data as item}
+            <li>{item.some_field}</li>
+        {/each}
+    </ul>
+{:else}
+    <p>Loading data...</p>
+{/if}
 ```
 
-## 🔮 Hardware Integration
-
-### Proto Hologram Connection
-
-```typescript
-// src/lib/hardware/proto.ts
-export class ProtoInterface {
-  async connect() {
-    // Proto connection logic
-  }
-  
-  async synchronizeField(spatialData: SpatialData) {
-    // Field synchronization
-  }
-}
-```
-
-### VIIM Glasses Integration
-
-```typescript
-// src/lib/hardware/viim.ts
-export class VIIMInterface {
-  async initializeAR(spatialField: SpatialField) {
-    // AR initialization
-  }
-}
-```
-
-### OpenBCI Integration
-
-```typescript
-// src/lib/hardware/bci.ts
-export class BCIInterface {
-  async captureSignals() {
-    // Neural signal processing
-  }
-}
-```
-
-## 🎨 Styling
-
-```typescript
-// tailwind.config.js
-module.exports = {
-  content: ['./src/**/*.{html,js,svelte,ts}'],
-  theme: {
-    extend: {
-      colors: {
-        quantum: {
-          light: '#8B5CF6',
-          dark: '#4C1D95'
-        },
-        spatial: {
-          primary: '#2563EB',
-          secondary: '#1E40AF'
-        }
-      }
-    }
-  },
-  plugins: [require('daisyui')],
-  daisyui: {
-    themes: [
-      {
-        quantum: {
-          primary: '#8B5CF6',
-          secondary: '#4C1D95',
-          accent: '#37CDBE',
-          neutral: '#3D4451',
-          'base-100': '#FFFFFF',
-        },
-      },
-    ],
-  },
-}
-```
-
-## 🔄 State Management
-
-```typescript
-// src/lib/stores/quantum-state.ts
-import { writable } from 'svelte/store';
-
-export const quantumState = writable({
-  spatialField: null,
-  coherenceLevel: 0,
-  entangledStates: [],
-  superposition: false
-});
-```
-
-## 🚀 Deployment
+**1.7 Run Development Server:**
 
 ```bash
-# Build quantum-ready application
-bun run build
-
-# Deploy to quantum-enabled infrastructure
-bun run deploy
+bun dev
 ```
 
-## 🤝 Contributing
+### 2. Cloudflare Workers Deployment (Wrangler, D1, KV)
 
-See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines on:
-- Quantum state management
-- Spatial protocol integration
-- Hardware compatibility
-- UI/UX improvements
+**2.1 Install Wrangler:**
 
-## 📝 License
+```bash
+npm install -g wrangler
+```
 
-MIT License - See [LICENSE](LICENSE) for details.
+**2.2 Configure Wrangler:**
+
+```bash
+wrangler login
+wrangler init
+```
+
+This will create a `wrangler.toml` configuration file.
+
+**2.3 Adapt API Routes for Cloudflare Workers:**
+
+```javascript
+// src/routes/api/data/+server.js (adapted for Cloudflare Workers)
+
+export const GET = async ({ request }) => {
+  try {
+    const data = await env.PROTO_DB.prepare('SELECT * FROM your_table').all(); // Using D1
+    // Or interact with KV (example: env.PROTO_KV.get('some_key'))
+
+    return new Response(JSON.stringify(data), {
+        headers: { 'Content-Type': 'application/json' }
+    });
+  } catch (error) {
+      return new Response(JSON.stringify({ error: error.message }), { status: 500 });
+  }
+};
+
+```
+
+**2.4 Configure Wrangler.toml:**
+
+```toml
+name = "proto-freedom-dashboard"
+main = "src/routes/_worker.js" # Generated by SvelteKit
+compatibility_date = "2023-10-26" # Or later
+
+[env.production]
+  kv_namespaces = [ { binding = "PROTO_KV", id = "..." } ] # KV namespace ID
+  d1_databases = [ { binding = "PROTO_DB", id = "..." } ] # D1 database ID
+```
+
+**2.5 Build and Deploy:**
+
+```bash
+bun build # Important - build before deploying with Wrangler
+wrangler publish
+```
+
+### DASHBOARD.md Readme Details
+
+```markdown
+# Proto-Freedom Dashboard
+
+## Open-Source Hologram Control Center
+
+This dashboard provides a web interface for managing assets, apps, and controlling Proto Hologram displays.
+
+### Features:
+
+* **My Content:** Upload, manage, and preview hologram assets (images, videos, 3D models).
+* **Shared Content:** Access and manage content shared with you.
+* **Playlists:** Create and edit playlists of hologram content.
+* **Schedule:** Schedule automated playback of content.
+* **Apps:** Manage and configure apps installed on hologram devices.
+* **Devices:** Monitor and control connected hologram displays.
+* **Teams:** Collaborate on projects and share content with team members.
+
+### Local Development Setup:
+
+1. **Install Bun:** [https://bun.sh/](https://bun.sh/)
+2. **Clone Repository:** `git clone ...`
+3. **Install Dependencies:** `bun install`
+4. **Create SQLite Database:** `touch proto.db` (and populate with data)
+5. **Run Development Server:** `bun dev`
+
+### Cloudflare Workers Deployment:
+
+1. **Install Wrangler:** `npm install -g wrangler`
+2. **Configure Wrangler:** `wrangler login`, `wrangler init`
+3. **Create KV Namespace and D1 Database:**  Use the Cloudflare Dashboard.
+4. **Update `wrangler.toml`:** Add KV namespace ID and D1 database ID.
+5. **Build Project:** `bun build`
+6. **Deploy:** `wrangler publish`
+
+### Technology Stack:
+
+* **Frontend:** SvelteKit
+* **Local Runtime:** Bun, SQLite
+* **Cloud Runtime:** Cloudflare Workers, D1 (SQLite), KV
+
+### Contributing:
+
+Contributions are welcome!  Please fork the repository and submit pull requests.
+
+### License:
+
+[Specify license (e.g., MIT)]
+
+```
