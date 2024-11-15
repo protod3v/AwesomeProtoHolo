@@ -135,48 +135,6 @@ bun build # Important - build before deploying with Wrangler
 wrangler publish
 ```
 
-### DASHBOARD.md Readme Details
-
-```markdown
-# Proto-Freedom Dashboard
-
-## Open-Source Hologram Control Center
-
-This dashboard provides a web interface for managing assets, apps, and controlling Proto Hologram displays.
-
-### Features:
-
-* **My Content:** Upload, manage, and preview hologram assets (images, videos, 3D models).
-* **Shared Content:** Access and manage content shared with you.
-* **Playlists:** Create and edit playlists of hologram content.
-* **Schedule:** Schedule automated playback of content.
-* **Apps:** Manage and configure apps installed on hologram devices.
-* **Devices:** Monitor and control connected hologram displays.
-* **Teams:** Collaborate on projects and share content with team members.
-
-### Local Development Setup:
-
-1. **Install Bun:** [https://bun.sh/](https://bun.sh/)
-2. **Clone Repository:** `git clone ...`
-3. **Install Dependencies:** `bun install`
-4. **Create SQLite Database:** `touch proto.db` (and populate with data)
-5. **Run Development Server:** `bun dev`
-
-### Cloudflare Workers Deployment:
-
-1. **Install Wrangler:** `npm install -g wrangler`
-2. **Configure Wrangler:** `wrangler login`, `wrangler init`
-3. **Create KV Namespace and D1 Database:**  Use the Cloudflare Dashboard.
-4. **Update `wrangler.toml`:** Add KV namespace ID and D1 database ID.
-5. **Build Project:** `bun build`
-6. **Deploy:** `wrangler publish`
-
-### Technology Stack:
-
-* **Frontend:** SvelteKit
-* **Local Runtime:** Bun, SQLite
-* **Cloud Runtime:** Cloudflare Workers, D1 (SQLite), KV
-
 ### Contributing:
 
 Contributions are welcome!  Please fork the repository and submit pull requests.
