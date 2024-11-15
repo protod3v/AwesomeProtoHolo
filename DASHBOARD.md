@@ -139,8 +139,3 @@ wrangler publish
 
 Contributions are welcome!  Please fork the repository and submit pull requests.
 
-### License:
-
-[Specify license (e.g., MIT)]
-
-```
